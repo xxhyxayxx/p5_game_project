@@ -1,78 +1,52 @@
-let gameChar_x;
-let gameChar_y;
-let floorPos_y;
-let scrollPos;
-let gameChar_world_x;
-
-let isLeft;
-let isRight;
-let isFalling;
-let isPlummeting = false;
-
-let collectable;
-let clouds;
-let mountains;
-let canyon;
-
-let game_score;
-let flagpole;
-
-let lives;
-let reset;
-let clear;
-let test;
-let c1,c2;
-
-let platforms;
-let enemies;
-
-let jumpSound,coinSound,bgm;
+const globalObj = {};
 
 function preload()
 {
     soundFormats('mp3','wav');
 
     //load your sounds here
-    jumpSound = loadSound('assets/jump.wav');
-    coinSound = loadSound('assets/coin05.mp3');
-    bgm = loadSound('assets/bgm.mp3');
-    jumpSound.setVolume(0.2);
-    coinSound.setVolume(0.2);
-    bgm.setVolume(0.2);
+    globalObj.jumpSound = loadSound('assets/jump.wav');
+    globalObj.coinSound = loadSound('assets/coin05.mp3');
+    globalObj.bgm = loadSound('assets/bgm.mp3');
+    globalObj.jumpSound.setVolume(0.2);
+    globalObj.coinSound.setVolume(0.2);
+    globalObj.bgm.setVolume(0.2);
 
-    font = loadFont('assets/FredokaOne-Regular.ttf');
+    globalObj.font = loadFont('assets/FredokaOne-Regular.ttf');
 }
 
 
 function setup()
 {
     createCanvas(1024, 576);
-    bgm.loop();
-    c1 = color(255);
-    c2 = color(136, 212, 255);
+    globalObj.bgm.loop();
+    globalObj.c1 = color(255);
+    globalObj.c2 = color(136, 212, 255);
 
-    floorPos_y = height * 3/4;
+    globalObj.floorPos_y = height * 3/4;
 
     startGame();
 
-    lives = 3;
+    globalObj.lives = 3;
 
-    textFont(font);
+    textFont(globalObj.font);
+
+    globalObj.isPlummeting = false;
 
 }
 
 function draw()
 {
     background(136, 211, 252); //fill the sky blue
-    setGradient(0, 0, width, height, c2, c1);
+    setGradient(0, 0, width, height, globalObj.c2, globalObj.c1);
 
     noStroke();
     fill(86, 183, 110);
-    rect(0, floorPos_y, width, height - floorPos_y);
+    rect(0, globalObj.floorPos_y, width, height - globalObj.floorPos_y);
     fill(145,103,59);
-    rect(0, floorPos_y + 50, width, height - floorPos_y);
+    rect(0, globalObj.floorPos_y + 50, width, height - globalObj.floorPos_y);
     push();
-    translate(scrollPos, 0);
+    translate(globalObj.scrollPos, 0);
 
     // Draw clouds.
     drewCloud();
@@ -84,40 +58,40 @@ function draw()
     drawTrees();
 
     // Draw canyons.
-    for(let i = 0; i < canyon.length; i++){
-        canyon[i].draw();
-        canyon[i].check();
+    for(let i = 0; i < globalObj.canyon.length; i++){
+        globalObj.canyon[i].draw();
+        globalObj.canyon[i].check();
     }
 
-    // Draw collectable items.
-    for(let i = 0; i < collectable.length; i++){
-        if(collectable[i].isFound === false) {
-            collectable[i].draw();
-            collectable[i].check();
+    // Draw globalObj.collectable items.
+    for(let i = 0; i < globalObj.collectable.length; i++){
+        if(globalObj.collectable[i].isFound === false) {
+            globalObj.collectable[i].draw();
+            globalObj.collectable[i].check();
         }
     }
 
     // Draw platforms.
-    for(let i = 0; i < platforms.length; i++){
-        platforms[i].draw();
+    for(let i = 0; i < globalObj.platforms.length; i++){
+        globalObj.platforms[i].draw();
     }
 
     renderFlagpole();
 
     // Draw enemies.
-    for(let i = 0; i < enemies.length; i++){
-        enemies[i].draw();
+    for(let i = 0; i < globalObj.enemies.length; i++){
+        globalObj.enemies[i].draw();
 
-        let isContact = enemies[i].checkContact(gameChar_world_x, gameChar_y);
+        let isContact = globalObj.enemies[i].checkContact(globalObj.gameChar_world_x, globalObj.gameChar_y);
 
         if(isContact){
-            lives -= 1;
-            if(lives > 0){
+            globalObj.lives -= 1;
+            if(globalObj.lives > 0){
                 startGame();
                 break;
             }
-            if(lives < 1){
-                reset = true;
+            if(globalObj.lives < 1){
+                globalObj.reset = true;
             }
         }
     }
@@ -136,62 +110,62 @@ function draw()
 
     // Draw Heart.
     let heart_x = 0;
-    for(i = 1; i < lives + 1; i++){
+    for(i = 1; i < globalObj.lives + 1; i++){
         drawHeart(85+heart_x, 63, 20);
         heart_x += 25;
     }
 
     // Logic to make the game character move or the background scroll.
-    if(isLeft && !reset && !clear)
+    if(globalObj.isLeft && !globalObj.reset && !globalObj.clear)
     {
-        if(gameChar_x > width * 0.2)
+        if(globalObj.gameChar_x > width * 0.2)
         {
-            gameChar_x -= 5;
+            globalObj.gameChar_x -= 5;
         }
         else
         {
-            scrollPos += 5;
+            globalObj.scrollPos += 5;
         }
     }
 
-    if(isRight && !reset && !clear)
+    if(globalObj.isRight && !globalObj.reset && !globalObj.clear)
     {
-        if(gameChar_x < width * 0.8)
+        if(globalObj.gameChar_x < width * 0.8)
         {
-            gameChar_x  += 5;
+            globalObj.gameChar_x  += 5;
         }
         else
         {
-            scrollPos -= 5; // negative for moving against the background
+            globalObj.scrollPos -= 5; // negative for moving against the background
         }
     }
 
     // Logic to make the game character rise and fall.
-    if(gameChar_y < floorPos_y){
+    if(globalObj.gameChar_y < globalObj.floorPos_y){
         let isContact = false;
-        for(let i = 0; i < platforms.length; i++){
-            if(platforms[i].checkContact(gameChar_world_x, gameChar_y) === true){
+        for(let i = 0; i < globalObj.platforms.length; i++){
+            if(globalObj.platforms[i].checkContact(globalObj.gameChar_world_x, globalObj.gameChar_y) === true){
                 isContact = true;
                 break;
             }
         }
         if(isContact === false){
-            gameChar_y += 2;
-            isFalling = true;
+            globalObj.gameChar_y += 2;
+            globalObj.isFalling = true;
         }
     }else{
-        isFalling = false;
+        globalObj.isFalling = false;
     }
 
-    if(isPlummeting){
-        gameChar_y += 5;
+    if(globalObj.isPlummeting){
+        globalObj.gameChar_y += 5;
     }
 
-    if(flagpole.isReached === false){
+    if(globalObj.flagpole.isReached === false){
         checkFlagpole();
     }
 
-    if(flagpole.isReached){
+    if(globalObj.flagpole.isReached){
         fill(255, 196, 44);
         push();
         textSize(50);
@@ -200,12 +174,12 @@ function draw()
         text("LEVEL COMPLETE!", width/8, height/2);
         text("Press space to continue.", width/8, height/2 + 50);
         pop();
-        clear = true;
+        globalObj.clear = true;
         return;
     }
 
     // Update real position of gameChar for collision detection.
-    gameChar_world_x = gameChar_x - scrollPos;
+    globalObj.gameChar_world_x = globalObj.gameChar_x - globalObj.scrollPos;
 }
 
 
@@ -217,18 +191,18 @@ function draw()
 function keyPressed(){
 
     if(keyCode === 37){
-        isLeft = true;
+        globalObj.isLeft = true;
     }else if(keyCode === 39){
-        isRight = true;
+        globalObj.isRight = true;
     }
 
-    if(keyCode === 32 && gameChar_y === floorPos_y && !reset && !clear){
-        gameChar_y -= 100;
-        jumpSound.play();
+    if(keyCode === 32 && globalObj.gameChar_y === globalObj.floorPos_y && !globalObj.reset && !globalObj.clear){
+        globalObj.gameChar_y -= 100;
+        globalObj.jumpSound.play();
     }
 
-    if(keyCode === 32 && reset || keyCode === 32 && clear){
-        lives = 3;
+    if(keyCode === 32 && globalObj.reset || keyCode === 32 && globalObj.clear){
+        globalObj.lives = 3;
         startGame();
     }
 
@@ -238,9 +212,9 @@ function keyReleased()
 {
 
     if(keyCode === 37){
-        isLeft = false;
+        globalObj.isLeft = false;
     }else if(keyCode === 39){
-        isRight = false;
+        globalObj.isRight = false;
     }
 
 }
@@ -254,156 +228,156 @@ function keyReleased()
 function drawGameChar()
 {
     // draw game character
-    if(isLeft && isFalling)
+    if(globalObj.isLeft && globalObj.isFalling)
     {
         // add your jumping-left code
         fill(255, 255, 255)
-        ellipse(gameChar_x, gameChar_y - 57, 30, 30);
-        rect(gameChar_x - 15, gameChar_y - 57, 30, 48);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 57, 30, 30);
+        rect(globalObj.gameChar_x - 15, globalObj.gameChar_y - 57, 30, 48);
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / -3);
         ellipse(23,-30, 6, 15);
         pop();
         fill(255, 196, 44);
-        ellipse(gameChar_x-10, gameChar_y - 2, 8, 10);
-        ellipse(gameChar_x - 15, gameChar_y - 49, 10, 8);
+        ellipse(globalObj.gameChar_x-10, globalObj.gameChar_y - 2, 8, 10);
+        ellipse(globalObj.gameChar_x - 15, globalObj.gameChar_y - 49, 10, 8);
         fill(255, 221, 182);
-        rect(gameChar_x - 12, gameChar_y - 10, 4, 8);
+        rect(globalObj.gameChar_x - 12, globalObj.gameChar_y - 10, 4, 8);
         fill(255, 255, 255);
         stroke(0);
-        line(gameChar_x - 20, gameChar_y - 49, gameChar_x - 10, gameChar_y - 49);
-        ellipse(gameChar_x - 8, gameChar_y - 57, 7, 7);
+        line(globalObj.gameChar_x - 20, globalObj.gameChar_y - 49, globalObj.gameChar_x - 10, globalObj.gameChar_y - 49);
+        ellipse(globalObj.gameChar_x - 8, globalObj.gameChar_y - 57, 7, 7);
         fill(0);
-        ellipse(gameChar_x - 8, gameChar_y - 57, 1, 1);
+        ellipse(globalObj.gameChar_x - 8, globalObj.gameChar_y - 57, 1, 1);
     }
-    else if(isRight && isFalling)
+    else if(globalObj.isRight && globalObj.isFalling)
     {
         // add your jumping-right code
         fill(255, 255, 255)
-        ellipse(gameChar_x, gameChar_y - 57, 30, 30);
-        rect(gameChar_x - 15, gameChar_y - 57, 30, 48);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 57, 30, 30);
+        rect(globalObj.gameChar_x - 15, globalObj.gameChar_y - 57, 30, 48);
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / 3);
         ellipse(-23,-30, 6, 15);
         pop();
         fill(255, 196, 44);
-        ellipse(gameChar_x+10, gameChar_y - 2, 8, 10);
-        ellipse(gameChar_x + 15, gameChar_y - 49, 10, 8);
+        ellipse(globalObj.gameChar_x+10, globalObj.gameChar_y - 2, 8, 10);
+        ellipse(globalObj.gameChar_x + 15, globalObj.gameChar_y - 49, 10, 8);
         fill(255, 221, 182);
-        rect(gameChar_x + 8, gameChar_y - 10, 4, 8);
+        rect(globalObj.gameChar_x + 8, globalObj.gameChar_y - 10, 4, 8);
         fill(255, 255, 255);
         stroke(0);
-        line(gameChar_x + 20, gameChar_y - 49, gameChar_x + 10, gameChar_y - 49);
-        ellipse(gameChar_x + 8, gameChar_y - 57, 7, 7);
+        line(globalObj.gameChar_x + 20, globalObj.gameChar_y - 49, globalObj.gameChar_x + 10, globalObj.gameChar_y - 49);
+        ellipse(globalObj.gameChar_x + 8, globalObj.gameChar_y - 57, 7, 7);
         fill(0);
-        ellipse(gameChar_x + 8, gameChar_y - 57, 1, 1);
+        ellipse(globalObj.gameChar_x + 8, globalObj.gameChar_y - 57, 1, 1);
     }
-    else if(isLeft)
+    else if(globalObj.isLeft)
     {
         // add your walking left code
         fill(255, 255, 255)
-        ellipse(gameChar_x, gameChar_y - 45, 30, 30);
-        rect(gameChar_x - 15, gameChar_y - 45, 30, 48);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 45, 30, 30);
+        rect(globalObj.gameChar_x - 15, globalObj.gameChar_y - 45, 30, 48);
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / 6);
         ellipse(-24,-15, 6, 15);
         pop();
         fill(255, 196, 44);
-        arc(gameChar_x-10, gameChar_y + 3, 10, 10, PI, TWO_PI);
-        ellipse(gameChar_x - 15, gameChar_y - 37, 10, 8);
+        arc(globalObj.gameChar_x-10, globalObj.gameChar_y + 3, 10, 10, PI, TWO_PI);
+        ellipse(globalObj.gameChar_x - 15, globalObj.gameChar_y - 37, 10, 8);
         fill(255, 255, 255);
         stroke(0);
-        line(gameChar_x - 20, gameChar_y - 37, gameChar_x - 10, gameChar_y - 37);
-        ellipse(gameChar_x - 8, gameChar_y - 45, 7, 7);
+        line(globalObj.gameChar_x - 20, globalObj.gameChar_y - 37, globalObj.gameChar_x - 10, globalObj.gameChar_y - 37);
+        ellipse(globalObj.gameChar_x - 8, globalObj.gameChar_y - 45, 7, 7);
         fill(0);
-        ellipse(gameChar_x - 8, gameChar_y - 45, 1, 1);
+        ellipse(globalObj.gameChar_x - 8, globalObj.gameChar_y - 45, 1, 1);
 
     }
-    else if(isRight)
+    else if(globalObj.isRight)
     {
         // add your walking right code
         fill(255, 255, 255)
-        ellipse(gameChar_x, gameChar_y - 45, 30, 30);
-        rect(gameChar_x - 15, gameChar_y - 45, 30, 48);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 45, 30, 30);
+        rect(globalObj.gameChar_x - 15, globalObj.gameChar_y - 45, 30, 48);
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / -6);
         ellipse(24,-15, 6, 15);
         pop();
         fill(255, 196, 44);
-        arc(gameChar_x+10, gameChar_y + 3, 10, 10, PI, TWO_PI);
-        ellipse(gameChar_x + 15, gameChar_y - 37, 10, 8);
+        arc(globalObj.gameChar_x+10, globalObj.gameChar_y + 3, 10, 10, PI, TWO_PI);
+        ellipse(globalObj.gameChar_x + 15, globalObj.gameChar_y - 37, 10, 8);
         fill(255, 255, 255);
         stroke(0);
-        line(gameChar_x + 20, gameChar_y - 37, gameChar_x + 10, gameChar_y - 37);
-        ellipse(gameChar_x + 8, gameChar_y - 45, 7, 7);
+        line(globalObj.gameChar_x + 20, globalObj.gameChar_y - 37, globalObj.gameChar_x + 10, globalObj.gameChar_y - 37);
+        ellipse(globalObj.gameChar_x + 8, globalObj.gameChar_y - 45, 7, 7);
         fill(0);
-        ellipse(gameChar_x + 8, gameChar_y - 45, 1, 1);
+        ellipse(globalObj.gameChar_x + 8, globalObj.gameChar_y - 45, 1, 1);
 
     }
-    else if(isFalling || isPlummeting)
+    else if(globalObj.isFalling || globalObj.isPlummeting)
     {
         // add your jumping facing forwards code
         fill(255, 255, 255)
-        ellipse(gameChar_x, gameChar_y - 57, 30, 30);
-        rect(gameChar_x - 15, gameChar_y - 57, 30, 48);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 57, 30, 30);
+        rect(globalObj.gameChar_x - 15, globalObj.gameChar_y - 57, 30, 48);
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / 3);
         ellipse(-28,-34, 6, 15);
         pop();
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / -3);
         ellipse(28,-34, 6, 15);
         pop();
         fill(255, 196, 44);
-        ellipse(gameChar_x-10, gameChar_y - 2, 8, 10);
-        ellipse(gameChar_x+10, gameChar_y - 2, 8, 10);
-        ellipse(gameChar_x, gameChar_y - 46, 20, 12);
+        ellipse(globalObj.gameChar_x-10, globalObj.gameChar_y - 2, 8, 10);
+        ellipse(globalObj.gameChar_x+10, globalObj.gameChar_y - 2, 8, 10);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 46, 20, 12);
         fill(255, 221, 182);
-        rect(gameChar_x+8, gameChar_y - 10, 4, 8);
-        rect(gameChar_x - 12, gameChar_y - 10, 4, 8);
+        rect(globalObj.gameChar_x+8, globalObj.gameChar_y - 10, 4, 8);
+        rect(globalObj.gameChar_x - 12, globalObj.gameChar_y - 10, 4, 8);
         fill(255, 255, 255);
         stroke(0);
-        ellipse(gameChar_x - 5, gameChar_y - 57, 7, 7);
-        ellipse(gameChar_x + 6, gameChar_y - 57, 7, 7);
+        ellipse(globalObj.gameChar_x - 5, globalObj.gameChar_y - 57, 7, 7);
+        ellipse(globalObj.gameChar_x + 6, globalObj.gameChar_y - 57, 7, 7);
         fill(0);
-        ellipse(gameChar_x - 5, gameChar_y - 57, 1, 1);
-        ellipse(gameChar_x + 6, gameChar_y - 57, 1, 1);
-        ellipse(gameChar_x, gameChar_y - 46, 17, 4);
+        ellipse(globalObj.gameChar_x - 5, globalObj.gameChar_y - 57, 1, 1);
+        ellipse(globalObj.gameChar_x + 6, globalObj.gameChar_y - 57, 1, 1);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 46, 17, 4);
     }
     else
     {
         // add your standing front facing code
         fill(255, 255, 255)
-        ellipse(gameChar_x, gameChar_y - 45, 30, 30);
-        rect(gameChar_x - 15, gameChar_y - 45, 30, 48);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 45, 30, 30);
+        rect(globalObj.gameChar_x - 15, globalObj.gameChar_y - 45, 30, 48);
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / 6);
         ellipse(-28,-15, 6, 15);
         pop();
         push();
-        translate(gameChar_x, gameChar_y);
+        translate(globalObj.gameChar_x, globalObj.gameChar_y);
         rotate(PI / -6);
         ellipse(28,-15, 6, 15);
         pop();
         fill(255, 196, 44);
-        arc(gameChar_x-10, gameChar_y + 3, 10, 10, PI, TWO_PI);
-        arc(gameChar_x+10, gameChar_y + 3, 10, 10, PI, TWO_PI);
-        ellipse(gameChar_x, gameChar_y - 35, 20, 8);
+        arc(globalObj.gameChar_x-10, globalObj.gameChar_y + 3, 10, 10, PI, TWO_PI);
+        arc(globalObj.gameChar_x+10, globalObj.gameChar_y + 3, 10, 10, PI, TWO_PI);
+        ellipse(globalObj.gameChar_x, globalObj.gameChar_y - 35, 20, 8);
         fill(255, 255, 255);
         stroke(0);
-        line(gameChar_x - 9, gameChar_y - 36, gameChar_x + 9, gameChar_y - 36);
-        ellipse(gameChar_x - 5, gameChar_y - 45, 7, 7);
-        ellipse(gameChar_x + 6, gameChar_y - 45, 7, 7);
+        line(globalObj.gameChar_x - 9, globalObj.gameChar_y - 36, globalObj.gameChar_x + 9, globalObj.gameChar_y - 36);
+        ellipse(globalObj.gameChar_x - 5, globalObj.gameChar_y - 45, 7, 7);
+        ellipse(globalObj.gameChar_x + 6, globalObj.gameChar_y - 45, 7, 7);
         fill(0);
-        ellipse(gameChar_x - 5, gameChar_y - 45, 1, 1);
-        ellipse(gameChar_x + 6, gameChar_y - 45, 1, 1);
+        ellipse(globalObj.gameChar_x - 5, globalObj.gameChar_y - 45, 1, 1);
+        ellipse(globalObj.gameChar_x + 6, globalObj.gameChar_y - 45, 1, 1);
 
     }
 }
@@ -414,21 +388,21 @@ function drawGameChar()
 
 // Function to draw cloud objects.
 function drewCloud(){
-    for(let i = 0; i < clouds.length; i++){
+    for(let i = 0; i < globalObj.clouds.length; i++){
         fill(255, 255, 255);
-        ellipse(clouds[i].x_pos, clouds[i].y_pos, clouds[i].size, clouds[i].size);
-        ellipse(clouds[i].x_pos - 40, clouds[i].y_pos, clouds[i].size - 20, clouds[i].size - 20);
-        ellipse(clouds[i].x_pos + 40, clouds[i].y_pos, clouds[i].size - 20, clouds[i].size - 20);
+        ellipse(globalObj.clouds[i].x_pos, globalObj.clouds[i].y_pos, globalObj.clouds[i].size, globalObj.clouds[i].size);
+        ellipse(globalObj.clouds[i].x_pos - 40, globalObj.clouds[i].y_pos, globalObj.clouds[i].size - 20, globalObj.clouds[i].size - 20);
+        ellipse(globalObj.clouds[i].x_pos + 40, globalObj.clouds[i].y_pos, globalObj.clouds[i].size - 20, globalObj.clouds[i].size - 20);
     }
 }
 
 // Function to draw mountains objects.
 function drewMountains(){
-    for(let i = 0; i < mountains.length; i++){
+    for(let i = 0; i < globalObj.mountains.length; i++){
         fill(147, 212, 205);
-        triangle(mountains[i].x_pos, floorPos_y, mountains[i].x_pos - 260 , floorPos_y, mountains[i].x_pos - 140 , 140);
+        triangle(globalObj.mountains[i].x_pos, globalObj.floorPos_y, globalObj.mountains[i].x_pos - 260 , globalObj.floorPos_y, globalObj.mountains[i].x_pos - 140 , 140);
         fill(133, 206, 199);
-        triangle(mountains[i].x_pos - 150, floorPos_y, mountains[i].x_pos - 290 , floorPos_y, mountains[i].x_pos - 220, 200);
+        triangle(globalObj.mountains[i].x_pos - 150, globalObj.floorPos_y, globalObj.mountains[i].x_pos - 290 , globalObj.floorPos_y, globalObj.mountains[i].x_pos - 220, 200);
     }
 }
 
@@ -436,14 +410,14 @@ function drewMountains(){
 function drawTrees(){
     for(let i = 0; i < trees.length; i++){
         fill(123, 89, 52);
-        rect(trees[i].x_pos, floorPos_y - 50, trees[i].width, 50);
+        rect(trees[i].x_pos, globalObj.floorPos_y - 50, trees[i].width, 50);
         //branches
         fill(61, 142, 103);
-        ellipse(trees[i].x_pos + 20, floorPos_y - 130, 100, 120);
-        ellipse(trees[i].x_pos + 20, floorPos_y - 100, 140, 120);
+        ellipse(trees[i].x_pos + 20, globalObj.floorPos_y - 130, 100, 120);
+        ellipse(trees[i].x_pos + 20, globalObj.floorPos_y - 100, 140, 120);
         fill(75, 178, 129);
-        ellipse(trees[i].x_pos + 15, floorPos_y - 135, 95, 115);
-        ellipse(trees[i].x_pos + 15, floorPos_y - 105, 135, 115);
+        ellipse(trees[i].x_pos + 15, globalObj.floorPos_y - 135, 95, 115);
+        ellipse(trees[i].x_pos + 15, globalObj.floorPos_y - 105, 135, 115);
     }
 }
 
@@ -458,14 +432,14 @@ function createCanyon(x,width){
         width: width,
         draw: function(){
             fill(224, 244, 255);
-            rect(this.x, floorPos_y, this.width, 150);
+            rect(this.x, globalObj.floorPos_y, this.width, 150);
         },
         check: function(){
-            if(gameChar_world_x < (this.x + this.width) && gameChar_world_x > this.x && gameChar_y >= floorPos_y){
-                isPlummeting = true;
+            if(globalObj.gameChar_world_x < (this.x + this.width) && globalObj.gameChar_world_x > this.x && globalObj.gameChar_y >= globalObj.floorPos_y){
+                globalObj.isPlummeting = true;
             }
-            if(isPlummeting === true){
-                gameChar_y += 1;
+            if(globalObj.isPlummeting === true){
+                globalObj.gameChar_y += 1;
             }
         }
     }
@@ -475,7 +449,7 @@ function createCanyon(x,width){
 
 
 // ----------------------------------
-// Collectable items render and check functions
+// collectable items render and check functions
 // ----------------------------------
 
 // Function to draw collectable objects.
@@ -501,10 +475,10 @@ function createCollectable(x, y, isFound){
             rect(this.x -2, this.y - 10, 6, 23);
         },
         check: function(){
-            if(dist(gameChar_world_x,gameChar_y,this.x,this.y) < this.size) {
+            if(dist(globalObj.gameChar_world_x,globalObj.gameChar_y,this.x,this.y) < this.size) {
                 this.isFound = true;
-                game_score += 1;
-                coinSound.play();
+                globalObj.game_score += 1;
+                globalObj.coinSound.play();
             }
         }
     }
@@ -516,49 +490,49 @@ function renderFlagpole(){
     push();
     strokeWeight(5);
     stroke(100);
-    line(flagpole.x_pos,floorPos_y,flagpole.x_pos,floorPos_y - 300);
+    line(globalObj.flagpole.x_pos,globalObj.floorPos_y,globalObj.flagpole.x_pos,globalObj.floorPos_y - 300);
     fill(255);
     noStroke();
-    if(flagpole.isReached){
-        rect(flagpole.x_pos,floorPos_y - 300,70,55);
+    if(globalObj.flagpole.isReached){
+        rect(globalObj.flagpole.x_pos,globalObj.floorPos_y - 300,70,55);
         fill(255);
         stroke(0);
         strokeWeight(1);
-        ellipse(flagpole.x_pos + 23,floorPos_y - 280,15);
-        ellipse(flagpole.x_pos + 48,floorPos_y - 280,15);
+        ellipse(globalObj.flagpole.x_pos + 23,globalObj.floorPos_y - 280,15);
+        ellipse(globalObj.flagpole.x_pos + 48,globalObj.floorPos_y - 280,15);
         noStroke();
         fill(0);
-        ellipse(flagpole.x_pos + 23,floorPos_y - 280,5);
-        ellipse(flagpole.x_pos + 48,floorPos_y - 280,5);
+        ellipse(globalObj.flagpole.x_pos + 23,globalObj.floorPos_y - 280,5);
+        ellipse(globalObj.flagpole.x_pos + 48,globalObj.floorPos_y - 280,5);
         fill(255,196,44);
-        ellipse(flagpole.x_pos + 35,floorPos_y - 262,38,12);
+        ellipse(globalObj.flagpole.x_pos + 35,globalObj.floorPos_y - 262,38,12);
         stroke(0);
         strokeWeight(1);
-        line(flagpole.x_pos + 16,floorPos_y - 262,flagpole.x_pos + 53,floorPos_y - 262);
+        line(globalObj.flagpole.x_pos + 16,globalObj.floorPos_y - 262,globalObj.flagpole.x_pos + 53,globalObj.floorPos_y - 262);
     }else{
-        rect(flagpole.x_pos,floorPos_y - 50,70,50);
+        rect(globalObj.flagpole.x_pos,globalObj.floorPos_y - 50,70,50);
         fill(255);
         stroke(0);
         strokeWeight(1);
-        ellipse(flagpole.x_pos + 23,floorPos_y - 30,15);
-        ellipse(flagpole.x_pos + 48,floorPos_y - 30,15);
+        ellipse(globalObj.flagpole.x_pos + 23,globalObj.floorPos_y - 30,15);
+        ellipse(globalObj.flagpole.x_pos + 48,globalObj.floorPos_y - 30,15);
         noStroke();
         fill(0);
-        ellipse(flagpole.x_pos + 23,floorPos_y - 30,5);
-        ellipse(flagpole.x_pos + 48,floorPos_y - 30,5);
+        ellipse(globalObj.flagpole.x_pos + 23,globalObj.floorPos_y - 30,5);
+        ellipse(globalObj.flagpole.x_pos + 48,globalObj.floorPos_y - 30,5);
         fill(255,196,44);
-        ellipse(flagpole.x_pos + 35,floorPos_y - 12,38,12);
+        ellipse(globalObj.flagpole.x_pos + 35,globalObj.floorPos_y - 12,38,12);
         stroke(0);
         strokeWeight(1);
-        line(flagpole.x_pos + 16,floorPos_y - 12,flagpole.x_pos + 53,floorPos_y - 12);
+        line(globalObj.flagpole.x_pos + 16,globalObj.floorPos_y - 12,globalObj.flagpole.x_pos + 53,globalObj.floorPos_y - 12);
     }
     pop();
 }
 
 function checkFlagpole(){
-    let d  = abs(gameChar_world_x - flagpole.x_pos);
+    let d  = abs(globalObj.gameChar_world_x - globalObj.flagpole.x_pos);
     if(d < 15){
-        flagpole.isReached = true;
+        globalObj.flagpole.isReached = true;
     }
 }
 
@@ -699,7 +673,7 @@ function drawScoreBoard(){
     fill(111, 74, 45);
     noStroke();
     textStyle(BOLD);
-    text("SCORE : " + game_score, 30, 50);
+    text("SCORE : " + globalObj.game_score, 30, 50);
     text("LIFE : ", 30, 75);
 }
 
@@ -713,18 +687,18 @@ function drawHeart(x, y, size) {
 }
 
 function checkPlayerDie(){
-    if(gameChar_y > height){
-        lives -= 1;
-        if(lives > 0){
+    if(globalObj.gameChar_y > height){
+        globalObj.lives -= 1;
+        if(globalObj.lives > 0){
             startGame();
         }
-        if(lives < 1){
-            reset = true;
-            lives = 0;
+        if(globalObj.lives < 1){
+            globalObj.reset = true;
+            globalObj.lives = 0;
         }
     }
 
-    if(reset){
+    if(globalObj.reset){
         push();
         fill(255);
         textSize(50);
@@ -749,73 +723,74 @@ function setGradient(x, y, w, h, c1, c2) {
 }
 
 function startGame(){
-    gameChar_x = 80;
-    gameChar_y = floorPos_y;
+    globalObj.gameChar_x = 80;
+    globalObj.gameChar_y = globalObj.floorPos_y;
 
     // letiable to control the background scrolling.
-    scrollPos = 0;
+    globalObj.scrollPos = 0;
 
     // letiable to store the real position of the gameChar in the game
     // world. Needed for collision detection.
-    gameChar_world_x = gameChar_x - scrollPos;
+    globalObj.gameChar_world_x = globalObj.gameChar_x - globalObj.scrollPos;
 
     // Boolean letiables to control the movement of the game character.
-    isLeft = false;
-    isRight = false;
-    isFalling = false;
-    isPlummeting = false;
+    globalObj.isLeft = false;
+    globalObj.isRight = false;
+    globalObj.isFalling = false;
+    globalObj.isPlummeting = false;
 
     // Initialise arrays of scenery objects.
     trees = [{x_pos:100, width:40}, {x_pos:430, width:40}, {x_pos:580, width:40}, {x_pos:730, width:40}, {x_pos:940, width:40}, {x_pos:1110, width:40}, {x_pos:1380, width:40}, {x_pos:1600, width:40}, {x_pos:1760, width:40}, {x_pos:1930, width:40}, {x_pos:2100, width:40}, {x_pos:2250, width:40}, {x_pos:2400, width:40}, {x_pos:2600, width:40}, {x_pos:2750, width:40}, {x_pos:2900, width:40}];
 
-    clouds = [{x_pos: 400, y_pos: 100, size: 80},{x_pos: 700, y_pos: 150, size: 80},{x_pos: 950, y_pos: 100, size: 80},{x_pos: 1300, y_pos: 80, size: 80},{x_pos: 1800, y_pos: 110, size: 80},{x_pos: 2000, y_pos: 100, size: 80},{x_pos: 2300, y_pos: 80, size: 80},{x_pos: 2600, y_pos: 120, size: 80}];
+    globalObj.clouds = [{x_pos: 400, y_pos: 100, size: 80},{x_pos: 700, y_pos: 150, size: 80},{x_pos: 950, y_pos: 100, size: 80},{x_pos: 1300, y_pos: 80, size: 80},{x_pos: 1800, y_pos: 110, size: 80},{x_pos: 2000, y_pos: 100, size: 80},{x_pos: 2300, y_pos: 80, size: 80},{x_pos: 2600, y_pos: 120, size: 80}];
 
-    mountains = [{x_pos:200, y_pos:400}, {x_pos:700}, {x_pos:1200}, {x_pos:1900}, {x_pos:2000}, {x_pos:2500}, {x_pos:3000}, {x_pos:3300}, {x_pos:3600}];
+    globalObj.mountains = [{x_pos:200, y_pos:400}, {x_pos:700}, {x_pos:1200}, {x_pos:1900}, {x_pos:2000}, {x_pos:2500}, {x_pos:3000}, {x_pos:3300}, {x_pos:3600}];
 
-    platforms = [];
-    platforms.push(createPlatforms(500,floorPos_y - 100,200));
-    platforms.push(createPlatforms(900,floorPos_y - 100,150));
-    platforms.push(createPlatforms(1300,floorPos_y - 100,200));
-    platforms.push(createPlatforms(1400,floorPos_y - 100,200));
+    globalObj.platforms = [];
+    globalObj.platforms.push(createPlatforms(500,globalObj.floorPos_y - 100,200));
+    globalObj.platforms.push(createPlatforms(900,globalObj.floorPos_y - 100,150));
+    globalObj.platforms.push(createPlatforms(1300,globalObj.floorPos_y - 100,200));
+    globalObj.platforms.push(createPlatforms(1400,globalObj.floorPos_y - 100,200));
 
-    enemies = [];
-    enemies.push(new Enemy(530,floorPos_y - 60, 200));
-    enemies.push(new Enemy(1400,floorPos_y - 60, 100));
-    enemies.push(new Enemy(2800,floorPos_y - 60, 200));
-    enemies.push(new Enemy(3200,floorPos_y - 60, 200));
+    globalObj.enemies = [];
+    globalObj.enemies.push(new Enemy(530,globalObj.floorPos_y - 60, 200));
+    globalObj.enemies.push(new Enemy(1400,globalObj.floorPos_y - 60, 100));
+    globalObj.enemies.push(new Enemy(2800,globalObj.floorPos_y - 60, 200));
+    globalObj.enemies.push(new Enemy(3200,globalObj.floorPos_y - 60, 200));
+    
 
-    collectable = [];
-    collectable.push(createCollectable(500,410,false));
-    collectable.push(createCollectable(600,310,false));
-    collectable.push(createCollectable(900,310,false));
-    collectable.push(createCollectable(950,310,false));
-    collectable.push(createCollectable(1000,310,false));
-    collectable.push(createCollectable(1100,310,false));
-    collectable.push(createCollectable(1200,310,false));
-    collectable.push(createCollectable(1500,310,false));
-    collectable.push(createCollectable(1600,310,false));
-    collectable.push(createCollectable(1800,410,false));
-    collectable.push(createCollectable(2000,410,false));
-    collectable.push(createCollectable(2100,410,false));
-    collectable.push(createCollectable(2200,410,false));
-    collectable.push(createCollectable(2500,410,false));
-    collectable.push(createCollectable(3100,410,false));
-    collectable.push(createCollectable(3400,410,false));
-    collectable.push(createCollectable(3500,410,false));
+    globalObj.collectable = [];
+    globalObj.collectable.push(createCollectable(500,410,false));
+    globalObj.collectable.push(createCollectable(600,310,false));
+    globalObj.collectable.push(createCollectable(900,310,false));
+    globalObj.collectable.push(createCollectable(950,310,false));
+    globalObj.collectable.push(createCollectable(1000,310,false));
+    globalObj.collectable.push(createCollectable(1100,310,false));
+    globalObj.collectable.push(createCollectable(1200,310,false));
+    globalObj.collectable.push(createCollectable(1500,310,false));
+    globalObj.collectable.push(createCollectable(1600,310,false));
+    globalObj.collectable.push(createCollectable(1800,410,false));
+    globalObj.collectable.push(createCollectable(2000,410,false));
+    globalObj.collectable.push(createCollectable(2100,410,false));
+    globalObj.collectable.push(createCollectable(2200,410,false));
+    globalObj.collectable.push(createCollectable(2500,410,false));
+    globalObj.collectable.push(createCollectable(3100,410,false));
+    globalObj.collectable.push(createCollectable(3400,410,false));
+    globalObj.collectable.push(createCollectable(3500,410,false));
 
-    canyon = [];
-    canyon.push(createCanyon(300,100));
-    canyon.push(createCanyon(800,100));
-    canyon.push(createCanyon(1200,100));
-    canyon.push(createCanyon(1500,100));
-    canyon.push(createCanyon(2000,100));
-    canyon.push(createCanyon(2500,100));
+    globalObj.canyon = [];
+    globalObj.canyon.push(createCanyon(300,100));
+    globalObj.canyon.push(createCanyon(800,100));
+    globalObj.canyon.push(createCanyon(1200,100));
+    globalObj.canyon.push(createCanyon(1500,100));
+    globalObj.canyon.push(createCanyon(2000,100));
+    globalObj.canyon.push(createCanyon(2500,100));
 
-    game_score = 0;
+    globalObj.game_score = 0;
 
-    flagpole = {isReached: false, x_pos: 3800};
+    globalObj.flagpole = {isReached: false, x_pos: 3800};
 
-    reset = false;
+    globalObj.reset = false;
 
-    clear = false;
+    globalObj.clear = false;
 }
