@@ -1,4 +1,4 @@
-import {globalObj} from "../index";
+import {gameObj} from "../index";
 
 export const collectable = (p, x, y, isFound) => {
     let c = {
@@ -21,10 +21,10 @@ export const collectable = (p, x, y, isFound) => {
             p.rect(this.x - 2, this.y - 10, 6, 23);
         },
         check: function () {
-            if (p.dist(globalObj.gameChar_world_x, globalObj.gameChar_y, this.x, this.y) < this.size) {
+            if (p.dist(gameObj.gameChar_world_x, gameObj.gameChar_y, this.x, this.y) < this.size) {
                 this.isFound = true;
-                globalObj.game_score += 1;
-                //globalObj.coinSound.play();
+                gameObj.game_score += 1;
+                //gameObj.coinSound.play();
             }
         }
     }

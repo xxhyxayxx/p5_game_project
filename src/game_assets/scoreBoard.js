@@ -1,4 +1,4 @@
-import {globalObj} from "../index";
+import {gameObj} from "../index";
 
 export const scoreBoard = (p) => {
     p.fill(196, 158, 116);
@@ -20,6 +20,6 @@ export const scoreBoard = (p) => {
     p.fill(111, 74, 45);
     p.noStroke();
     p.textStyle(p.BOLD);
-    p.text("SCORE : " + globalObj.game_score, 30, 50);
+    p.text("SCORE : " + gameObj.game_score, 30, 50);
     p.text("LIFE : ", 30, 75);
 }
