@@ -5,6 +5,6 @@ import {sketch} from './sketch.js';
 
 document.body.style.margin = "0";
 
-export const globalObj = {};
+export const gameObj = {};
 
 const app = new p5(sketch, document.body);
