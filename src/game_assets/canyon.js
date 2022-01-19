@@ -1,6 +1,6 @@
 import {globalObj} from "../index";
 
-export const createCanyon = (p, x, width) => {
+export const canyon = (p, x, width) => {
     let ca = {
         x: x,
         width: width,

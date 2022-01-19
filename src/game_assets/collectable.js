@@ -1,6 +1,6 @@
 import {globalObj} from "../index";
 
-export const createCollectable = (p, x, y, isFound) => {
+export const collectable = (p, x, y, isFound) => {
     let c = {
         x: x,
         y: y,

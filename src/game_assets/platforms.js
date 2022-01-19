@@ -1,4 +1,4 @@
-export const createPlatforms = (p, x, y, length) => {
+export const platforms = (p, x, y, length) => {
     let q = {
         x: x,
         y: y,

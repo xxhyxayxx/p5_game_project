@@ -1,8 +1,8 @@
 import {globalObj} from "./index";
-import {createPlatforms} from "./game_assets/createPlatforms";
+import {platforms} from "./game_assets/platforms";
 import {Enemy} from "./game_assets/enemy";
-import {createCollectable} from "./game_assets/createCollectable";
-import {createCanyon} from "./game_assets/createCanyon";
+import {collectable} from "./game_assets/collectable";
+import {canyon} from "./game_assets/canyon";
 import {clouds} from "./game_assets/clouds";
 import {character} from "./game_assets/character";
 import {mountains} from "./game_assets/mountains";
@@ -299,10 +299,10 @@ export const sketch = (p) => {
         }, {x_pos: 700}, {x_pos: 1200}, {x_pos: 1900}, {x_pos: 2000}, {x_pos: 2500}, {x_pos: 3000}, {x_pos: 3300}, {x_pos: 3600}];
 
         globalObj.platforms = [];
-        globalObj.platforms.push(createPlatforms(p, 500, globalObj.floorPos_y - 100, 200));
-        globalObj.platforms.push(createPlatforms(p, 900, globalObj.floorPos_y - 100, 150));
-        globalObj.platforms.push(createPlatforms(p, 1300, globalObj.floorPos_y - 100, 200));
-        globalObj.platforms.push(createPlatforms(p, 1400, globalObj.floorPos_y - 100, 200));
+        globalObj.platforms.push(platforms(p, 500, globalObj.floorPos_y - 100, 200));
+        globalObj.platforms.push(platforms(p, 900, globalObj.floorPos_y - 100, 150));
+        globalObj.platforms.push(platforms(p, 1300, globalObj.floorPos_y - 100, 200));
+        globalObj.platforms.push(platforms(p, 1400, globalObj.floorPos_y - 100, 200));
 
         globalObj.enemies = [];
         globalObj.enemies.push(new Enemy(p, 530, globalObj.floorPos_y - 60, 200));
@@ -312,31 +312,31 @@ export const sketch = (p) => {
 
 
         globalObj.collectable = [];
-        globalObj.collectable.push(createCollectable(p, 500, 410, false));
-        globalObj.collectable.push(createCollectable(p, 600, 310, false));
-        globalObj.collectable.push(createCollectable(p, 900, 310, false));
-        globalObj.collectable.push(createCollectable(p, 950, 310, false));
-        globalObj.collectable.push(createCollectable(p, 1000, 310, false));
-        globalObj.collectable.push(createCollectable(p, 1100, 310, false));
-        globalObj.collectable.push(createCollectable(p, 1200, 310, false));
-        globalObj.collectable.push(createCollectable(p, 1500, 310, false));
-        globalObj.collectable.push(createCollectable(p, 1600, 310, false));
-        globalObj.collectable.push(createCollectable(p, 1800, 410, false));
-        globalObj.collectable.push(createCollectable(p, 2000, 410, false));
-        globalObj.collectable.push(createCollectable(p, 2100, 410, false));
-        globalObj.collectable.push(createCollectable(p, 2200, 410, false));
-        globalObj.collectable.push(createCollectable(p, 2500, 410, false));
-        globalObj.collectable.push(createCollectable(p, 3100, 410, false));
-        globalObj.collectable.push(createCollectable(p, 3400, 410, false));
-        globalObj.collectable.push(createCollectable(p, 3500, 410, false));
+        globalObj.collectable.push(collectable(p, 500, 410, false));
+        globalObj.collectable.push(collectable(p, 600, 310, false));
+        globalObj.collectable.push(collectable(p, 900, 310, false));
+        globalObj.collectable.push(collectable(p, 950, 310, false));
+        globalObj.collectable.push(collectable(p, 1000, 310, false));
+        globalObj.collectable.push(collectable(p, 1100, 310, false));
+        globalObj.collectable.push(collectable(p, 1200, 310, false));
+        globalObj.collectable.push(collectable(p, 1500, 310, false));
+        globalObj.collectable.push(collectable(p, 1600, 310, false));
+        globalObj.collectable.push(collectable(p, 1800, 410, false));
+        globalObj.collectable.push(collectable(p, 2000, 410, false));
+        globalObj.collectable.push(collectable(p, 2100, 410, false));
+        globalObj.collectable.push(collectable(p, 2200, 410, false));
+        globalObj.collectable.push(collectable(p, 2500, 410, false));
+        globalObj.collectable.push(collectable(p, 3100, 410, false));
+        globalObj.collectable.push(collectable(p, 3400, 410, false));
+        globalObj.collectable.push(collectable(p, 3500, 410, false));
 
         globalObj.canyon = [];
-        globalObj.canyon.push(createCanyon(p, 300, 100));
-        globalObj.canyon.push(createCanyon(p, 800, 100));
-        globalObj.canyon.push(createCanyon(p, 1200, 100));
-        globalObj.canyon.push(createCanyon(p, 1500, 100));
-        globalObj.canyon.push(createCanyon(p, 2000, 100));
-        globalObj.canyon.push(createCanyon(p, 2500, 100));
+        globalObj.canyon.push(canyon(p, 300, 100));
+        globalObj.canyon.push(canyon(p, 800, 100));
+        globalObj.canyon.push(canyon(p, 1200, 100));
+        globalObj.canyon.push(canyon(p, 1500, 100));
+        globalObj.canyon.push(canyon(p, 2000, 100));
+        globalObj.canyon.push(canyon(p, 2500, 100));
 
         globalObj.game_score = 0;
 
