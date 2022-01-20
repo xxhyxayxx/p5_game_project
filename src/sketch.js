@@ -1,16 +1,10 @@
 import {gameObj} from "./index";
-import {clouds} from "./module/game_assets/clouds";
-import {character} from "./module/game_assets/character";
-import {mountains} from "./module/game_assets/mountains";
-import {trees} from "./module/game_assets/trees";
-import {scoreBoard} from "./module/game_assets/scoreBoard";
-import {heartLife} from "./module/game_assets/heartLife";
-import {flagPole} from "./module/game_assets/flagPole";
 import {setGradient} from "./module/setGradient";
 import {checkFlagpole} from "./module/checkFlagpole";
 import {checkPlayerDie} from "./module/checkPlayerDie";
 import {startGame} from "./module/startGame";
 import {checkPlayerMove} from "./module/checkPlayerMove";
+import {drawGameAssets} from "./module/drawGameAssets";
 
 export const sketch = (p) => {
 
@@ -57,71 +51,9 @@ export const sketch = (p) => {
         p.push();
         p.translate(gameObj.scrollPos, 0);
 
-        // Draw clouds.
-        clouds();
-
-        // Draw mountains.
-        mountains();
-
-        // Draw trees.
-        trees();
-
-        // Draw canyons.
-        for (let i = 0; i < gameObj.canyon.length; i++) {
-            gameObj.canyon[i].draw();
-            gameObj.canyon[i].check();
-        }
-
-        // Draw gameObj.collectable items.
-        for (let i = 0; i < gameObj.collectable.length; i++) {
-            if (gameObj.collectable[i].isFound === false) {
-                gameObj.collectable[i].draw();
-                gameObj.collectable[i].check();
-            }
-        }
-
-        // Draw platforms.
-        for (let i = 0; i < gameObj.platforms.length; i++) {
-            gameObj.platforms[i].draw();
-        }
-
-        flagPole();
-
-        // Draw enemies.
-        for (let i = 0; i < gameObj.enemies.length; i++) {
-            gameObj.enemies[i].draw();
-
-            let isContact = gameObj.enemies[i].checkContact(gameObj.gameChar_world_x, gameObj.gameChar_y);
-
-            if (isContact) {
-                gameObj.lives -= 1;
-                if (gameObj.lives > 0) {
-                    startGame();
-                    break;
-                }
-                if (gameObj.lives < 1) {
-                    gameObj.reset = true;
-                }
-            }
-        }
-
-
-        p.pop();
+        drawGameAssets();
 
         checkPlayerDie();
-
-        // Draw game character.
-        character();
-
-        // Draw Score Board.
-        scoreBoard();
-
-        //Draw Heart.
-        let heart_x = 0;
-        for (let i = 1; i < gameObj.lives + 1; i++) {
-            heartLife(85 + heart_x, 63, 20);
-            heart_x += 25;
-        }
 
         checkPlayerMove();
 
