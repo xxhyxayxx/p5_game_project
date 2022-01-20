@@ -7,4 +7,4 @@ document.body.style.margin = "0";
 
 export const gameObj = {};
 
-const app = new p5(sketch, document.body);
+export const myp5 = new p5(sketch, document.body);
