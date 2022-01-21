@@ -1,6 +1,6 @@
 import {myp5} from "../index";
 
-export const setGradient = (p, x, y, w, h, c1, c2) => {
+export const setGradient = (x, y, w, h, c1, c2) => {
     myp5.noFill();
 
     // Left to right gradient
