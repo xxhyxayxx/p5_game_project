@@ -41,7 +41,7 @@ export const sketch = (p) => {
 
     p.draw = () => {
         p.background(136, 211, 252); //fill the sky blue
-        setGradient(p, 0, 0, p.width, p.height, gameObj.c2, gameObj.c1);
+        setGradient(0, 0, p.width, p.height, gameObj.c2, gameObj.c1);
 
         p.noStroke();
         p.fill(86, 183, 110);
