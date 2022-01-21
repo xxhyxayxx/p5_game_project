@@ -2,6 +2,28 @@ import {gameObj} from "../../index";
 import {myp5} from "../../index";
 
 export const character = () => {
+    const charBody = (y) => {
+        myp5.fill(255, 255, 255)
+        myp5.ellipse(gameObj.gameChar_x, y, 30, 30);
+        myp5.rect(gameObj.gameChar_x - 15, y, 30, 48);
+    }
+
+    const charArm = (x, y, rotate) => {
+        myp5.push();
+        myp5.translate(gameObj.gameChar_x, gameObj.gameChar_y);
+        myp5.rotate(rotate);
+        myp5.ellipse(x, y, 6, 15);
+        myp5.pop();
+    }
+
+    const charEyes = (x, y) => {
+        myp5.push();
+        myp5.ellipse(x, y, 7, 7);
+        myp5.fill(0);
+        myp5.pop();
+        myp5.ellipse(x, y, 1, 1);
+    }
+
     // draw game character
     if (gameObj.isLeft && gameObj.isFalling) {
         // add your jumping-left code
@@ -155,27 +177,5 @@ export const character = () => {
         charEyes(gameObj.gameChar_x - 5, gameObj.gameChar_y - 45);
         charEyes(gameObj.gameChar_x + 6, gameObj.gameChar_y - 45);
 
-    }
-
-    function charBody(y) {
-        myp5.fill(255, 255, 255)
-        myp5.ellipse(gameObj.gameChar_x, y, 30, 30);
-        myp5.rect(gameObj.gameChar_x - 15, y, 30, 48);
-    }
-
-    function charArm(x, y, rotate) {
-        myp5.push();
-        myp5.translate(gameObj.gameChar_x, gameObj.gameChar_y);
-        myp5.rotate(rotate);
-        myp5.ellipse(x, y, 6, 15);
-        myp5.pop();
-    }
-
-    function charEyes(x, y) {
-        myp5.push();
-        myp5.ellipse(x, y, 7, 7);
-        myp5.fill(0);
-        myp5.pop();
-        myp5.ellipse(x, y, 1, 1);
     }
 }
