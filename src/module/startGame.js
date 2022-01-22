@@ -33,20 +33,15 @@ export const startGame = () => {
         width: 40
     }, {x_pos: 2400, width: 40}, {x_pos: 2600, width: 40}, {x_pos: 2750, width: 40}, {x_pos: 2900, width: 40}];
 
-    gameObj.clouds = [{x_pos: 400, y_pos: 100, size: 80}, {x_pos: 700, y_pos: 150, size: 80}, {
+    gameObj.clouds = [{x_pos: 400, y_pos: 100}, {x_pos: 700, y_pos: 150, size: 80}, {
         x_pos: 950,
-        y_pos: 100,
-        size: 80
-    }, {x_pos: 1300, y_pos: 80, size: 80}, {x_pos: 1800, y_pos: 110, size: 80}, {
+        y_pos: 100
+    }, {x_pos: 1300, y_pos: 80}, {x_pos: 1800, y_pos: 110}, {
         x_pos: 2000,
-        y_pos: 100,
-        size: 80
-    }, {x_pos: 2300, y_pos: 80, size: 80}, {x_pos: 2600, y_pos: 120, size: 80}];
+        y_pos: 100
+    }, {x_pos: 2300, y_pos: 80}, {x_pos: 2600, y_pos: 120}];
 
-    gameObj.mountains = [{
-        x_pos: 200,
-        y_pos: 400
-    }, {x_pos: 700}, {x_pos: 1200}, {x_pos: 1900}, {x_pos: 2000}, {x_pos: 2500}, {x_pos: 3000}, {x_pos: 3300}, {x_pos: 3600}];
+    gameObj.mountains = [{x_pos: 200}, {x_pos: 700}, {x_pos: 1200}, {x_pos: 1900}, {x_pos: 2000}, {x_pos: 2500}, {x_pos: 3000}, {x_pos: 3300}, {x_pos: 3600}];
 
     gameObj.platforms = [];
     gameObj.platforms.push(new Platforms(500, gameObj.floorPos_y - 100, 200));
