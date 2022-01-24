@@ -57,23 +57,23 @@ export const startGame = () => {
 
 
     gameObj.collectable = [];
-    gameObj.collectable.push(new Collectable(500, 410, false));
-    gameObj.collectable.push(new Collectable(600, 310, false));
-    gameObj.collectable.push(new Collectable(900, 310, false));
-    gameObj.collectable.push(new Collectable(950, 310, false));
-    gameObj.collectable.push(new Collectable(1000, 310, false));
-    gameObj.collectable.push(new Collectable(1100, 310, false));
-    gameObj.collectable.push(new Collectable(1200, 310, false));
-    gameObj.collectable.push(new Collectable(1500, 310, false));
-    gameObj.collectable.push(new Collectable(1600, 310, false));
-    gameObj.collectable.push(new Collectable(1800, 410, false));
-    gameObj.collectable.push(new Collectable(2000, 410, false));
-    gameObj.collectable.push(new Collectable(2100, 410, false));
-    gameObj.collectable.push(new Collectable(2200, 410, false));
-    gameObj.collectable.push(new Collectable(2500, 410, false));
-    gameObj.collectable.push(new Collectable(3100, 410, false));
-    gameObj.collectable.push(new Collectable(3400, 410, false));
-    gameObj.collectable.push(new Collectable(3500, 410, false));
+    gameObj.collectable.push(new Collectable(500, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(600, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(900, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(950, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(1000, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(1100, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(1200, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(1500, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(1600, gameObj.floorPos_y - 125, false));
+    gameObj.collectable.push(new Collectable(1800, gameObj.floorPos_y - 25, false));
+    gameObj.collectable.push(new Collectable(2000, gameObj.floorPos_y - 25, false));
+    gameObj.collectable.push(new Collectable(2100, gameObj.floorPos_y - 25, false));
+    gameObj.collectable.push(new Collectable(2200, gameObj.floorPos_y - 25, false));
+    gameObj.collectable.push(new Collectable(2500, gameObj.floorPos_y - 25, false));
+    gameObj.collectable.push(new Collectable(3100, gameObj.floorPos_y - 25, false));
+    gameObj.collectable.push(new Collectable(3400, gameObj.floorPos_y - 25, false));
+    gameObj.collectable.push(new Collectable(3500, gameObj.floorPos_y - 25, false));
 
     gameObj.canyon = [];
     gameObj.canyon.push(new Canyon(300, 100));

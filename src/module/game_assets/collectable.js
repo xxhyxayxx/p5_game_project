@@ -28,7 +28,7 @@ export class Collectable {
         if (myp5.dist(gameObj.gameChar_world_x, gameObj.gameChar_y, this.x, this.y) < this.size) {
             this.isFound = true;
             gameObj.game_score += 1;
-            //gameObj.coinSound.play();
+            gameObj.coinSound.play();
         }
     }
 }

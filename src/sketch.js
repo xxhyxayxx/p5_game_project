@@ -9,22 +9,22 @@ import {drawGameAssets} from "./module/drawGameAssets";
 export const sketch = (p) => {
 
     p.preload = () => {
-        //p.soundFormats('mp3', 'wav');
+        p.soundFormats('mp3', 'wav');
 
         //load your sounds here
-        //gameObj.jumpSound = p.loadSound('assets/jump.wav');
-        //gameObj.coinSound = p.loadSound('assets/coin05.mp3');
-        //gameObj.bgm = p.loadSound('assets/bgm.mp3');
-        //gameObj.jumpSound.setVolume(0.2);
-        //gameObj.coinSound.setVolume(0.2);
-        //gameObj.bgm.setVolume(0.2);
+        gameObj.jumpSound = p.loadSound('../assets/jump.wav');
+        gameObj.coinSound = p.loadSound('../assets/coin05.mp3');
+        gameObj.bgm = p.loadSound('../assets/bgm.mp3');
+        gameObj.jumpSound.setVolume(0.2);
+        gameObj.coinSound.setVolume(0.2);
+        gameObj.bgm.setVolume(0.2);
 
-        //gameObj.font = p.loadFont('assets/FredokaOne-Regular.ttf');
+        gameObj.font = p.loadFont('../assets/FredokaOne-Regular.ttf');
     }
 
     p.setup = () => {
-        p.createCanvas(1024, 576);
-        //gameObj.bgm.loop();
+        p.createCanvas(p.windowWidth, p.windowHeight);
+        gameObj.bgm.loop();
         gameObj.c1 = p.color(255);
         gameObj.c2 = p.color(136, 212, 255);
 
@@ -34,7 +34,7 @@ export const sketch = (p) => {
 
         gameObj.lives = 3;
 
-        //p.textFont(gameObj.font);
+        p.textFont(gameObj.font);
 
         gameObj.isPlummeting = false;
     }
@@ -63,20 +63,24 @@ export const sketch = (p) => {
         gameObj.gameChar_world_x = gameObj.gameChar_x - gameObj.scrollPos;
     }
 
+    const keyCodeLeft = 37;
+    const keyCodeRight = 39;
+    const keyCodeEnter = 32;
+
     p.keyPressed = () => {
 
-        if (p.keyCode === 37) {
+        if (p.keyCode === keyCodeLeft) {
             gameObj.isLeft = true;
-        } else if (p.keyCode === 39) {
+        } else if (p.keyCode === keyCodeRight) {
             gameObj.isRight = true;
         }
 
-        if (p.keyCode === 32 && gameObj.gameChar_y === gameObj.floorPos_y && !gameObj.reset && !gameObj.clear) {
+        if (p.keyCode === keyCodeEnter && gameObj.gameChar_y === gameObj.floorPos_y && !gameObj.reset && !gameObj.clear) {
             gameObj.gameChar_y -= 100;
-            //gameObj.jumpSound.play();
+            gameObj.jumpSound.play();
         }
 
-        if (p.keyCode === 32 && gameObj.reset || p.keyCode === 32 && gameObj.clear) {
+        if (p.keyCode === keyCodeEnter && gameObj.reset || p.keyCode === keyCodeEnter && gameObj.clear) {
             gameObj.lives = 3;
             startGame();
         }
@@ -85,14 +89,13 @@ export const sketch = (p) => {
 
     p.keyReleased = () => {
 
-        if (p.keyCode === 37) {
+        if (p.keyCode === keyCodeLeft) {
             gameObj.isLeft = false;
-        } else if (p.keyCode === 39) {
+        } else if (p.keyCode === keyCodeRight) {
             gameObj.isRight = false;
         }
 
     }
-
 
     startGame();
 }

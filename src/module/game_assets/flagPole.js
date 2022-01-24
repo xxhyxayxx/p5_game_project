@@ -34,27 +34,19 @@ export const flagPole = () => {
     myp5.noStroke();
 
     if (gameObj.flagpole.isReached) {
-
         //background
         flagBack(gameObj.floorPos_y - 300);
-
         //eyes
         flagEyes(gameObj.floorPos_y - 280);
-
         //mouse
         flagMouse(gameObj.floorPos_y - 262);
-
     } else {
-
         //background
         flagBack(gameObj.floorPos_y - 50);
-
         //eyes
         flagEyes(gameObj.floorPos_y - 30);
-
         //mouse
         flagMouse(gameObj.floorPos_y - 12);
-
     }
 
     myp5.pop();
