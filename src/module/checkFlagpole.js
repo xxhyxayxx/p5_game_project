@@ -1,4 +1,4 @@
-import {gameObj} from "../index";
+import {gameObj} from "./gameObj";
 import {myp5} from "../index";
 
 export const checkFlagpole = () => {

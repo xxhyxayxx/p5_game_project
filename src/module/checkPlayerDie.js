@@ -1,4 +1,4 @@
-import {gameObj} from "../index";
+import {gameObj} from "./gameObj";
 import {startGame} from "./startGame";
 import {myp5} from "../index";
 
