@@ -1,15 +1,28 @@
 import {clouds} from "./game_assets/clouds";
 import {mountains} from "./game_assets/mountains";
 import {trees} from "./game_assets/trees";
-import {gameObj} from "../index";
+import {gameObj} from "./gameObj";
 import {flagPole} from "./game_assets/flagPole";
 import {startGame} from "./startGame";
 import {character} from "./game_assets/character";
 import {scoreBoard} from "./game_assets/scoreBoard";
 import {heartLife} from "./game_assets/heartLife";
 import {myp5} from "../index";
+import {Canyon} from "./game_assets/canyon";
+import {setGradient} from "./setGradient";
 
 export const drawGameAssets = () => {
+    myp5.background(136, 211, 252); //fill the sky blue
+    setGradient(0, 0, myp5.width, myp5.height, myp5.color(136, 212, 255), myp5.color(255));
+
+    myp5.noStroke();
+    myp5.fill(86, 183, 110);
+    myp5.rect(0, gameObj.floorPos_y, myp5.width, myp5.height - gameObj.floorPos_y);
+    myp5.fill(145, 103, 59);
+    myp5.rect(0, gameObj.floorPos_y + 50, myp5.width, myp5.height - gameObj.floorPos_y);
+    myp5.push();
+    myp5.translate(gameObj.scrollPos, 0);
+
     // Draw clouds.
     clouds();
 
@@ -20,9 +33,17 @@ export const drawGameAssets = () => {
     trees();
 
     // Draw canyons.
-    for (let i = 0; i < gameObj.canyon.length; i++) {
-        gameObj.canyon[i].draw();
-        gameObj.canyon[i].check();
+    const canyonObj = [];
+    canyonObj.push(new Canyon(300, 100));
+    canyonObj.push(new Canyon(800, 100));
+    canyonObj.push(new Canyon(1200, 100));
+    canyonObj.push(new Canyon(1500, 100));
+    canyonObj.push(new Canyon(2000, 100));
+    canyonObj.push(new Canyon(2500, 100));
+
+    for (let i = 0; i < canyonObj.length; i++) {
+        canyonObj[i].draw();
+        canyonObj[i].check();
     }
 
     // Draw gameObj.collectable items.
