@@ -2,10 +2,13 @@ const path = require('path');
 
 module.exports = {
     mode: "development",
-    entry: './src/index.js',
+    entry: './src/index.ts',
     watch: true,
     watchOptions: {
         ignored: /node_modules/,
+    },
+    resolve: {
+        extensions: ['.ts', '.js'],
     },
     output: {
         filename: 'main.js',
@@ -14,15 +17,9 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.m?js$/,
+                test: /\.m?ts$/,
                 exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env'],
-                        plugins: ['@babel/plugin-proposal-object-rest-spread']
-                    }
-                }
+                use: 'ts-loader',
             }
         ]
     }

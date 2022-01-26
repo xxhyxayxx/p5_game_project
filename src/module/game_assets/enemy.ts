@@ -1,7 +1,13 @@
 import {myp5} from "../../index";
 
 export class Enemy {
-    constructor(x, y, range) {
+    x: number
+    y: number
+    range: number
+    currentX: number
+    inc: number
+
+    constructor(x:number, y:number, range:number) {
         this.x = x;
         this.y = y;
         this.range = range;
@@ -20,10 +26,10 @@ export class Enemy {
         }
     }
 
-    draw() {
+    enemiesDraw() {
         this.update();
 
-        const eneTeeth = (y) => {
+        const eneTeeth = (y: number) => {
             myp5.rect(this.currentX + 13, y, 5, 3);
             myp5.rect(this.currentX + 19, y, 5, 3);
             myp5.rect(this.currentX + 25, y, 5, 3);
@@ -90,7 +96,7 @@ export class Enemy {
         eneTeeth(this.y + 38);
     }
 
-    checkContact(gc_x, gc_y) {
+    enemiesCheckContact(gc_x: number, gc_y: number) {
         let d = myp5.dist(gc_x, gc_y, this.currentX, this.y + 40);
         return d < 30;
     }

@@ -2,7 +2,10 @@ import {gameObj} from "../gameObj";
 import {myp5} from "../../index";
 
 export class Canyon {
-    constructor(x, width) {
+    x: number
+    width: number
+
+    constructor(x: number, width: number) {
         this.x = x
         this.width = width
     }

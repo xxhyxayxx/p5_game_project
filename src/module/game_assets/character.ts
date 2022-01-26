@@ -2,13 +2,13 @@ import {gameObj} from "../gameObj";
 import {myp5} from "../../index";
 
 export const character = () => {
-    const charBody = (y) => {
+    const charBody = (y: number) => {
         myp5.fill(255, 255, 255)
         myp5.ellipse(gameObj.gameChar_x, y, 30, 30);
         myp5.rect(gameObj.gameChar_x - 15, y, 30, 48);
     }
 
-    const charArm = (x, y, rotate) => {
+    const charArm = (x: number, y: number, rotate: number) => {
         myp5.push();
         myp5.translate(gameObj.gameChar_x, gameObj.gameChar_y);
         myp5.rotate(rotate);
@@ -16,7 +16,7 @@ export const character = () => {
         myp5.pop();
     }
 
-    const charEyes = (x, y) => {
+    const charEyes = (x: number, y:number) => {
         myp5.push();
         myp5.ellipse(x, y, 7, 7);
         myp5.fill(0);

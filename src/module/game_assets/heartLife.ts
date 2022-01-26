@@ -1,6 +1,6 @@
 import {myp5} from "../../index";
 
-export const heartLife = (x, y, size) => {
+export const heartLife = (x:number, y:number, size:number) => {
     myp5.beginShape();
     myp5.vertex(x, y);
     myp5.fill(255, 117, 117)
