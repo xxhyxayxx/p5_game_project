@@ -3,7 +3,7 @@ import {myp5} from "../index";
 
 export const checkFlagpole = () => {
     if (gameObj.flagpole.isReached === false) {
-        let d = myp5.abs(gameObj.gameChar_world_x - gameObj.flagpole.x_pos);
+        const d = myp5.abs(gameObj.gameChar_world_x - gameObj.flagpole.x_pos);
         if (d < 15) {
             gameObj.flagpole.isReached = true;
         }

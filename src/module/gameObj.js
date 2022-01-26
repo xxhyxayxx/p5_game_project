@@ -1,11 +1,9 @@
-import {myp5} from "../index";
-
 export const gameObj = {
-    floorPos_y : myp5.height * 3 / 4,
+    floorPos_y : 0,
     lives: 3,
     isPlummeting: false,
     gameChar_x: 80,
-    gameChar_y: myp5.height * 3 / 4,
+    gameChar_y: 0,
     gameChar_world_x: 80,
     scrollPos: 0,
     isLeft: false,
@@ -15,7 +13,7 @@ export const gameObj = {
     enemies: [],
     collectable: [],
     game_score: 0,
-    flagpole: {isReached: false, x_pos: 3800},
+    flagpole: {},
     reset: false,
     clear: false
 };

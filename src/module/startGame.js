@@ -26,6 +26,7 @@ export const startGame = () => {
     gameObj.platforms.push(new Platforms(1300, gameObj.floorPos_y - 100, 200));
     gameObj.platforms.push(new Platforms(1400, gameObj.floorPos_y - 100, 200));
 
+    gameObj.enemies = [];
     gameObj.enemies.push(new Enemy(530, gameObj.floorPos_y - 60, 200));
     gameObj.enemies.push(new Enemy(1400, gameObj.floorPos_y - 60, 100));
     gameObj.enemies.push(new Enemy(2800, gameObj.floorPos_y - 60, 200));
@@ -57,7 +58,9 @@ export const startGame = () => {
 
     gameObj.clear = false;
 
-    gameObj.lives = 3;
+    if(gameObj.lives < 0){
+        gameObj.lives = 3;
+    }
 
     return gameObj;
 }
