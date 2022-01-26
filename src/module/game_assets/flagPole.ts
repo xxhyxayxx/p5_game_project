@@ -2,12 +2,12 @@ import {gameObj} from "../gameObj";
 import {myp5} from "../../index";
 
 export const flagPole = () => {
-    const flagBack = (y) => {
+    const flagBack = (y:number) => {
         myp5.rect(gameObj.flagpole.x_pos, y, 70, 55);
         myp5.fill(255);
     }
 
-    const flagEyes = (y) => {
+    const flagEyes = (y:number) => {
         myp5.stroke(0);
         myp5.strokeWeight(1);
         myp5.ellipse(gameObj.flagpole.x_pos + 23, y, 15);
@@ -18,7 +18,7 @@ export const flagPole = () => {
         myp5.ellipse(gameObj.flagpole.x_pos + 48, y, 5);
     }
 
-    const flagMouse = (y) => {
+    const flagMouse = (y:number) => {
         myp5.fill(255, 196, 44);
         myp5.ellipse(gameObj.flagpole.x_pos + 35, y, 38, 12);
         myp5.stroke(0);

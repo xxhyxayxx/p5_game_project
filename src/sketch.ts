@@ -4,9 +4,10 @@ import {checkPlayerDie} from "./module/checkPlayerDie";
 import {startGame} from "./module/startGame";
 import {checkPlayerMove} from "./module/checkPlayerMove";
 import {drawGameAssets} from "./module/drawGameAssets";
+import * as p5 from 'p5';
 
-export const sketch = (p) => {
-    let font;
+export const sketch = (p: p5) => {
+    let font: {};
     const keyCodeLeft = 37;
     const keyCodeRight = 39;
     const keyCodeEnter = 32;

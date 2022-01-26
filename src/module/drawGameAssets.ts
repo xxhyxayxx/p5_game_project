@@ -49,23 +49,23 @@ export const drawGameAssets = () => {
     // Draw gameObj.collectable items.
     for (let i = 0; i < gameObj.collectable.length; i++) {
         if (gameObj.collectable[i].isFound === false) {
-            gameObj.collectable[i].draw();
-            gameObj.collectable[i].check();
+            gameObj.collectable[i].collectableDraw();
+            gameObj.collectable[i].collectableCheck();
         }
     }
 
     // Draw platforms.
     for (let i = 0; i < gameObj.platforms.length; i++) {
-        gameObj.platforms[i].draw();
+        gameObj.platforms[i].platformsDraw();
     }
 
     flagPole();
 
     // Draw enemies.
     for (let i = 0; i < gameObj.enemies.length; i++) {
-        gameObj.enemies[i].draw();
+        gameObj.enemies[i].enemiesDraw();
 
-        let isContact = gameObj.enemies[i].checkContact(gameObj.gameChar_world_x, gameObj.gameChar_y);
+        let isContact = gameObj.enemies[i].enemiesCheckContact(gameObj.gameChar_world_x, gameObj.gameChar_y);
 
         if (isContact) {
             gameObj.lives -= 1;

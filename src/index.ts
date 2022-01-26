@@ -1,6 +1,6 @@
-import p5 from 'p5';
+import * as p5 from 'p5';
 
-import {sketch} from './sketch.js';
+import {sketch} from './sketch';
 
 document.body.style.margin = "0";
 

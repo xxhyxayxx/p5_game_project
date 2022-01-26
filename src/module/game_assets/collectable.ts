@@ -2,14 +2,19 @@ import {gameObj} from "../gameObj";
 import {myp5} from "../../index";
 
 export class Collectable {
-    constructor(x, y, isFound) {
+    x: number
+    y: number
+    size: number
+    isFound: boolean
+
+    constructor(x: number, y: number, isFound: boolean) {
         this.x = x
         this.y = y
         this.size = 50
         this.isFound = isFound
     }
 
-    draw() {
+    collectableDraw() {
         myp5.fill(214, 173, 1);
         myp5.ellipse(this.x + 5, this.y, this.size - 10, this.size);
         myp5.fill(242, 210, 48);
@@ -24,7 +29,7 @@ export class Collectable {
         myp5.rect(this.x - 2, this.y - 10, 6, 23);
     }
 
-    check() {
+    collectableCheck() {
         if (myp5.dist(gameObj.gameChar_world_x, gameObj.gameChar_y, this.x, this.y) < this.size) {
             this.isFound = true;
             gameObj.game_score += 1;
