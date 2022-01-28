@@ -1,6 +1,18 @@
 import {myp5} from "../../index";
 
-export class Enemy {
+interface enemy {
+    x: number;
+    y: number;
+    range: number;
+    currentX: number;
+    inc: number;
+
+    update: () => void;
+    enemiesDraw: () => void;
+    enemiesCheckContact: (gc_x: number, gc_y: number) => void;
+}
+
+export class Enemy implements enemy {
     x: number
     y: number
     range: number

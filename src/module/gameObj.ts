@@ -1,3 +1,7 @@
+import {Enemy} from "./game_assets/enemy";
+import {Collectable} from "./game_assets/collectable";
+import {Platforms} from "./game_assets/platforms";
+
 interface GameObj {
     floorPos_y: number,
     lives: number,
@@ -9,9 +13,9 @@ interface GameObj {
     isLeft: boolean,
     isRight: boolean,
     isFalling: boolean,
-    platforms: any,
-    enemies: any,
-    collectable: any,
+    platforms: Array<Platforms>,
+    enemies: Array<Enemy>,
+    collectable: Array<Collectable>,
     game_score: number,
     flagpole: {
         isReached: boolean,

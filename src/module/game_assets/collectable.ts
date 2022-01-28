@@ -1,7 +1,17 @@
 import {gameObj} from "../gameObj";
 import {myp5} from "../../index";
 
-export class Collectable {
+interface collectable {
+    x: number
+    y: number
+    size: number
+    isFound: boolean
+
+    collectableDraw: () => void;
+    collectableCheck: () => void;
+}
+
+export class Collectable implements collectable {
     x: number
     y: number
     size: number

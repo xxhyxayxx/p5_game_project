@@ -52,6 +52,7 @@ export const sketch = (p: p5) => {
         }
 
         if (p.keyCode === keyCodeEnter && gameObj.reset || p.keyCode === keyCodeEnter && gameObj.clear) {
+            gameObj.lives = 3;
             startGame();
         }
 

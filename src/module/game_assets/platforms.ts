@@ -1,6 +1,15 @@
 import {myp5} from "../../index";
 
-export class Platforms {
+interface platforms {
+    x: number
+    y: number
+    length: number
+
+    platformsDraw: () => void;
+    checkContact: (gc_x:number, gc_y:number) => void;
+}
+
+export class Platforms implements platforms{
     x:number
     y:number
     length:number

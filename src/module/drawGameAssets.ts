@@ -46,6 +46,7 @@ export const drawGameAssets = () => {
         canyonObj[i].check();
     }
 
+
     // Draw gameObj.collectable items.
     for (let i = 0; i < gameObj.collectable.length; i++) {
         if (gameObj.collectable[i].isFound === false) {
